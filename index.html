@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Allabeler</title>
+  <style>
+    #container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .group-box {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    #left-group-box {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: auto;
+      grid-gap: 10px;
+      margin-right: 10px;
+    }
+
+    #right-group-box {
+      flex: 1;
+      display: none;
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: auto;
+      grid-gap: 10px;
+      margin-right: 10px;
+    }
+
+    #canvas {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .combo-box {
+      width: 120px; /* Set the width of the combo box */
+      height: 30px; /* Set the height of the combo box */
+      font-size: 16px; /* Set the font size of the combo box */
+    }
+
+    .button-container {
+      display: flex;
+      align-items: center;
+      margin-top: 5px;
+    }
+
+    .button-container button {
+      margin-left: 10px;
+      padding: 8px 16px; /* Set the padding of the button */
+      font-size: 16px; /* Set the font size of the button */
+    }
+
+    .placeholder {
+      display: none; /* Initially hide all placeholders */
+      width: 300px;
+      height: 300px;
+      background-color: lightgray;
+      margin-top: 10px;
+    }
+
+    /* New CSS styles for the inner group box */
+    .inner-group-box {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      margin-right: 10px
+    }
+
+    /* Adjust the margin between combo boxes and buttons */
+    .inner-group-box .button-container {
+      margin-top: 5px;
+      padding: 10px;
+    }
+
+    #placeholder1 {
+      display: block; /* Show placeholder1 */
+    }
+
+    .inner-group-box.large {
+      grid-column: span 2;
+    }
+
+    .inner-group-box.large .button-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%; 
+      margin: 0; /* Remove any margin */
+    }
+
+    .inner-group-box.large .button-container button {
+      flex: 1; /* Make the buttons fill the available space */
+      margin: 0 5px; /* Add some spacing between the buttons */
+    }
+
+    #button1 {
+      color: orange; /* Color for the first button */
+    }
+
+    #button2 {
+      color: green; /* Color for the second button */
+    }
+
+    #button3 {
+      color: blue; /* Color for the third button */
+    }
+
+    #button4 {
+      color: purple; /* Color for the fourth button */
+    }
+    
+    .button-container button.selected {
+      background-color: yellow;
+    }
+
+    #button0-text {
+      color: red; /* Set the color for the text */
+      font-weight: bold;
+    }
+
+    #button1-text {
+      color: orange; /* Set the color for the text */
+    }
+
+    #button2-text {
+      color: green; /* Set the color for the text */
+    }
+
+    #button3-text {
+      color: blue; /* Set the color for the text */
+    }
+
+    #button4-text {
+      color: purple; /* Set the color for the text */
+      
+    }
+
+    .selected {
+      background-color: yellow;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <input type="text" id="input-text" placeholder="Enter your ID">
+  <button onclick="showContent(); readCSV();">Save ID and Start</button>
+  <div id="content-container" style="display: none;">
+    <div id="container">
+      <div id="left-group-box" class="group-box">
+        <div class="inner-group-box">
+          <h2>X-Ray Image</h2>
+          <div class="placeholder" id="placeholder1">
+            <canvas id="canvas1" width="300" height="300"></canvas>
+          </div>
+        </div>
+          <div class="inner-group-box">
+            <h2>Legend</h2>
+            <div class="combo-box-container">
+              <div class="button-container">
+                <select class="combo-box" id="combo1">
+                  <option disabled selected>Select</option>
+                  <option value="1">Present</option>
+                  <option value="2">Not Present</option>
+                  <option value="3">Ambiguous</option>
+                </select>
+                <button onclick="handleButtonClick(1)" id="button1">Narrow Joint Space </button>
+              </div>
+              <div class="button-container">
+                <select class="combo-box" id="combo2">
+                  <option disabled selected>Select</option>
+                  <option value="1">Present</option>
+                  <option value="2">Not Present</option>
+                  <option value="3">Ambiguous</option>
+                </select>
+                <button onclick="handleButtonClick(2)" id="button2">Osteophytes</button>
+              </div>
+              <div class="button-container">
+                <select class="combo-box" id="combo3">
+                  <option disabled selected>Select</option>
+                  <option value="1">Present</option>
+                  <option value="2">Not Present</option>
+                  <option value="3">Ambiguous</option>
+                </select>
+                <button onclick="handleButtonClick(3)" id="button3">Irregularity</button>
+              </div>
+              <div class="button-container">
+                <select class="combo-box" id="combo4">
+                  <option disabled selected>Select</option>
+                  <option value="1">Present</option>
+                  <option value="2">Not Present</option>
+                  <option value="3">Ambiguous</option>
+                </select>
+                <button onclick="handleButtonClick(4)" id="button4">Tibital Spiking</button>
+              </div>
+            </div>
+          </div>
+          <div class="inner-group-box large">
+            <h3>First Label</h3>
+            <div class="button-container">
+              <button onclick="handleOption('arthritis')" id="arthritis-button">Arthritis</button>
+              <button onclick="handleOption('non-arthritis')" id="non-arthritis-button">Non-Arthritis</button>
+            </div>
+          </div>
+          <div class="inner-group-box large">
+            <div class="button-container">
+              <button onclick="showSecondPlaceholder()">Next Step</button>
+            </div>
+          </div>
+        </div>
+      <div id="right-group-box" class="group-box">
+        <div class="inner-group-box">
+          <h2>AI focus spot</h2>
+          <div class="placeholder" id="placeholder2" style="display: none;">
+            <canvas id="canvas2" width="300" height="300"></canvas>
+          </div>
+        </div>
+        <div class="inner-group-box">
+          <h2>Feedback</h2>
+          <p id="button0-text">AI Suggestion:</p>
+          Overlap Percentage:
+          <p id="button1-text">Narrow Joint Space:</p>
+          <p id="button2-text">Osteophytes:</p>
+          <p id="button3-text">Irregularity of cortical surface:</p>
+          <p id="button4-text">Tibital Spiking:</p>
+        </div>
+        <div class="inner-group-box large">
+          <h3>Final Label</h3>
+          <div class="button-container">
+            <button onclick="handleOption2('arthritis')" id="arthritis-button2">Arthritis</button>
+            <button onclick="handleOption2('non-arthritis')" id="non-arthritis-button2">Non-Arthritis</button>
+          </div>
+        </div>
+        <div class="inner-group-box large">
+          <div class="button-container">
+            <button onclick="hideSecondPlaceholder()">Next Image</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <script>
+    let isDrawing = false;
+    let startX, startY;
+    let selectedColor = 'red'; // Default color
+    let boxes = []; // Array to store drawn boxes
+    let imgNum = 0;
+    let tempVal = "";
+    let temp = [];
+    let userResult = [];
+
+    let arthritisSelected = false;
+    let nonArthritisSelected = false;
+    
+    function updateLabelText(elementId, newText) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.textContent = newText;
+      }
+    }
+
+    function handleOption(option) {
+      const arthritisButton = document.getElementById('arthritis-button');
+      const nonArthritisButton = document.getElementById('non-arthritis-button');
+
+      if (option === 'arthritis') {
+        arthritisSelected = !arthritisSelected;
+        nonArthritisSelected = false;
+        arthritisButton.classList.toggle('selected');
+        nonArthritisButton.classList.remove('selected');
+        tempVal = 'Arthritis'
+      } else if (option === 'non-arthritis') {
+        nonArthritisSelected = !nonArthritisSelected;
+        arthritisSelected = false;
+        nonArthritisButton.classList.toggle('selected');
+        arthritisButton.classList.remove('selected');
+        tempVal = 'Non-arthritis'
+      }
+    }
+
+    let arthritisSelected2 = false;
+    let nonArthritisSelected2 = false;
+
+    function handleOption2(option) {
+      const arthritisButton = document.getElementById('arthritis-button2');
+      const nonArthritisButton = document.getElementById('non-arthritis-button2');
+
+      if (option === 'arthritis') {
+        arthritisSelected2 = !arthritisSelected2;
+        nonArthritisSelected2 = false;
+        arthritisButton.classList.toggle('selected');
+        nonArthritisButton.classList.remove('selected');
+        tempVal = 'Arthritis'
+      } else if (option === 'non-arthritis') {
+        nonArthritisSelected2 = !nonArthritisSelected2;
+        arthritisSelected2 = false;
+        nonArthritisButton.classList.toggle('selected');
+        arthritisButton.classList.remove('selected');
+        tempVal = 'Non-arthritis'
+      }
+    }
+    function showContent() {
+      const inputText = document.getElementById('input-text').value;
+      if (inputText.trim() === '') {
+        alert('Please enter your ID before starting');
+        return;
+      }
+
+      const contentContainer = document.getElementById('content-container');
+      contentContainer.style.display = 'block';
+    }
+    
+    function mapComboValue(value) {
+      switch (value) {
+        case '1':
+          return 'Present';
+        case '2':
+          return 'Not Present';
+        case '3':
+          return 'Ambiguous';
+        default:
+          return 'Unknown';
+      }
+    }
+
+    function showSecondPlaceholder() {
+      // Save the combo box selection to the temp array
+      const comboValue1 = document.getElementById('combo1').value;
+      const mappedValue1 = mapComboValue(comboValue1);
+      temp.push(mappedValue1);
+      // Save the combo box selection to the temp array
+      const comboValue2 = document.getElementById('combo2').value;
+      const mappedValue2 = mapComboValue(comboValue2);
+      temp.push(mappedValue2);
+      // Save the combo box selection to the temp array
+      const comboValue3 = document.getElementById('combo3').value;
+      const mappedValue3 = mapComboValue(comboValue3);
+      temp.push(mappedValue3);
+      // Save the combo box selection to the temp array
+      const comboValue4 = document.getElementById('combo4').value;
+      const mappedValue4 = mapComboValue(comboValue4);
+      temp.push(mappedValue4);
+
+      temp.push(tempVal);
+
+      updateLabelText('button0-text', 'AI Suggestion: ' + AISuggestion());
+      updateLabelText('button1-text', 'Narrow Joint Space:A');
+      updateLabelText('button2-text', 'Osteophytes:C');
+      updateLabelText('button3-text', 'Irregularity of cortical surface:B');
+      updateLabelText('button4-text', 'Tibital Spiking:D');
+
+      const placeholder2 = document.getElementById('placeholder2');
+      placeholder2.style.display = 'block';
+
+      const rightGroupBox = document.getElementById('right-group-box');
+      rightGroupBox.style.display = 'grid'; // Show the right group box
+      
+      copyCanvas(); // Detect and draw red boxes on canvas2
+    }
+    function AISuggestion(){
+      if(imgNum < csvData.length){
+        if(csvData[imgNum][4] == 1){
+          return 'Arthritis'
+        }
+        else{
+          return 'Non-arthritis'
+        }
+      }
+    }
+
+    function hideSecondPlaceholder(){
+      temp.push(tempVal);
+      temp.push(csvData[imgNum][1]);
+      temp.push(csvData[imgNum][2]);
+      temp.push(csvData[imgNum][3]);
+      temp.push(csvData[imgNum][4]);
+
+      const placeholder2 = document.getElementById('placeholder2');
+      placeholder2.style.display = 'none';
+
+      const rightGroupBox = document.getElementById('right-group-box');
+      rightGroupBox.style.display = 'none'; // Show the right group box
+
+      // Deselect all combo boxes
+      const combos = document.querySelectorAll('.combo-box');
+      combos.forEach(combo => {
+        combo.selectedIndex = 0;
+      });
+
+      // Deselect all buttons
+      const buttons = document.querySelectorAll('.button-container button');
+      buttons.forEach(button => {
+        button.classList.remove('selected');
+      });
+
+      let isValidInput = false;
+      let confidenceLevel;
+
+      while (!isValidInput) {
+        // Prompt for the confidence level
+        confidenceLevel = prompt('Please enter the confidence level (1-7) 1 is for least confident and 7 for most confident:');
+        
+        // Check if the input is valid
+        if (confidenceLevel === null) {
+          return; // User clicked Cancel, exit the function
+        } else if (confidenceLevel >= 1 && confidenceLevel <= 7 && !isNaN(confidenceLevel)) {
+          isValidInput = true; // Valid input, exit the loop
+        } else {
+          alert('Invalid input. Please enter a number between 1 and 7.');
+        }
+      }
+
+      // Push the confidence level to the temp array
+      temp.push(parseInt(confidenceLevel));
+
+      if (imgNum < csvData.length-1) {
+        // If there are more images, update the image source and reset the canvas
+        const imagePath = csvData[imgNum][2]; // Assuming the file path is at index 2
+        image.src = "./original/" + imagePath;
+        userResult.push(temp);
+        temp = [];
+        console.log(userResult);
+
+        imgNum = imgNum + 1;
+      } else {
+        userResult.push(temp);
+        temp = [];
+        console.log(userResult);
+        // If there are no more images, change the button text to "Save Data"
+        const imagePath = "./complete.png";
+        image.src = imagePath;
+
+        saveData();
+      }
+    }
+
+    function handleButtonClick(buttonId) {
+      // Deselect all buttons
+      const buttons = document.querySelectorAll('.button-container button');
+      buttons.forEach(button => {
+        button.classList.remove('selected');
+      });
+
+      // Select the clicked button
+      const clickedButton = document.getElementById(`button${buttonId}`);
+      clickedButton.classList.add('selected');
+
+      // Set the selected color based on the buttonId
+      switch (buttonId) {
+        case 1:
+          selectedColor = 'orange';
+          break;
+        case 2:
+          selectedColor = 'green';
+          break;
+        case 3:
+          selectedColor = 'blue';
+          break;
+        case 4:
+          selectedColor = 'purple';
+          break;
+        default:
+          selectedColor = 'black';
+      }
+    }
+
+    function handleCanvasMouseDown(event) {
+      const canvas = document.getElementById('canvas1');
+      const ctx = canvas.getContext('2d');
+
+      // Check if the combo box for the feature is selected with "Present"
+      const comboValue = document.getElementById(`combo${selectedColor === 'orange' ? 1 : selectedColor === 'green' ? 2 : selectedColor === 'blue' ? 3 : 4}`).value;
+      if (selectedColor !== 'black' && selectedColor !== 'red' && comboValue === '1') {
+        isDrawing = true;
+        startX = event.offsetX;
+        startY = event.offsetY;
+      } else {
+        isDrawing = false;
+      }
+    }
+
+    function handleCanvasMouseMove(event) {
+      if (!isDrawing) return;
+
+      const canvas = document.getElementById('canvas1');
+      const ctx = canvas.getContext('2d');
+
+      const currentX = event.offsetX;
+      const currentY = event.offsetY;
+
+      const width = currentX - startX;
+      const height = currentY - startY;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      redrawBoxes(ctx);
+      ctx.strokeStyle = selectedColor; // Set the outline color
+      ctx.fillStyle = 'transparent'; // Set the fill color to transparent
+      ctx.lineWidth = 2; // Set the line width for the outline
+      ctx.strokeRect(startX, startY, width, height); // Draw the rectangle outline
+    }
+
+    function handleCanvasMouseUp() {
+      if (!isDrawing) return;
+
+      const canvas = document.getElementById('canvas1');
+      const ctx = canvas.getContext('2d');
+
+      const currentX = event.offsetX;
+      const currentY = event.offsetY;
+
+      const width = currentX - startX;
+      const height = currentY - startY;
+
+      // Check if the width is greater than 10 pixels
+      if (Math.abs(width) > 10 && Math.abs(height) > 10) {
+        // Store the box coordinates and color
+        boxes.push({ x: startX, y: startY, width, height, color: selectedColor });
+      }
+
+      isDrawing = false;
+    }
+
+    function handleCanvasRightClick(event) {
+      event.preventDefault();
+
+      const canvas = document.getElementById('canvas1');
+      const ctx = canvas.getContext('2d');
+
+      // Find the box to delete
+      const mouseX = event.offsetX;
+      const mouseY = event.offsetY;
+
+      for (let i = boxes.length - 1; i >= 0; i--) {
+        const box = boxes[i];
+        if (mouseX >= box.x && mouseX <= box.x + box.width && mouseY >= box.y && mouseY <= box.y + box.height) {
+          // Remove the box from the array
+          boxes.splice(i, 1);
+          redrawBoxes(ctx);
+          break; // Exit loop after deleting the first box found
+        }
+      }
+    }
+
+    function redrawBoxes(ctx) {
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      for (const box of boxes) {
+        ctx.strokeStyle = box.color; // Set the outline color
+        ctx.fillStyle = 'transparent'; // Set the fill color to transparent
+        ctx.lineWidth = 2; // Set the line width for the outline
+        ctx.strokeRect(box.x, box.y, box.width, box.height); // Draw the rectangle outline
+      }
+    }
+
+    function copyCanvas() {
+      const canvas1 = document.getElementById('canvas1');
+      const canvas2 = document.getElementById('canvas2');
+      const ctx2 = canvas2.getContext('2d');
+
+      // Clear the content of canvas2
+      ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+
+      // Load the image from the XAI folder
+      const image = new Image();
+      image.onload = function() {
+        // Draw the image on canvas2
+        ctx2.drawImage(image, 0, 0, canvas2.width, canvas2.height);
+
+        // Detect red regions and save their locations
+        const imageData = ctx2.getImageData(0, 0, canvas2.width, canvas2.height);
+        const data = imageData.data;
+        const redBoxes = [];
+
+        for (let i = 0; i < data.length; i += 4) {
+          const red = data[i];
+          const green = data[i + 1];
+          const blue = data[i + 2];
+          const alpha = data[i + 3];
+
+          // Check if the pixel is red
+          if (red > 200 && green < 100 && blue < 100 && alpha > 100) {
+            const x = (i / 4) % canvas2.width;
+            const y = Math.floor((i / 4) / canvas2.width);
+
+            // Save the location of the red box
+            redBoxes.push({ x: x, y: y });
+          }
+        }
+
+        // Clone canvas1
+        const canvas1Clone = document.createElement('canvas');
+        canvas1Clone.width = canvas1.width;
+        canvas1Clone.height = canvas1.height;
+        const ctx1Clone = canvas1Clone.getContext('2d');
+        ctx1Clone.drawImage(canvas1, 0, 0);
+
+        // Draw the red boxes on top of the clone of canvas1
+        for (const box of redBoxes) {
+          ctx1Clone.strokeStyle = 'red';
+          ctx1Clone.lineWidth = 2;
+          ctx1Clone.strokeRect(box.x - 5, box.y - 5, 10, 10); // Adjust rectangle size as needed
+        }
+
+        // Draw the cloned canvas onto canvas2
+        ctx2.drawImage(canvas1Clone, 0, 0);
+      };
+      image.src = './XAI/' + csvData[imgNum][2]; // Assuming csvData[imgNum][2] contains the image filename in the XAI folder
+    }
+
+    function saveData() {
+      const githubPAT = 'GITHUB_PAT'; // Use the environment variable for the PAT
+      const owner = 'SwagMasterDave'; // Replace with your GitHub username
+      const repo = 'allabeler.github.io'; // Replace with your GitHub repository name
+      const path = 'userResult.csv'; // Path to save the CSV file in your repository
+      const message = 'Add user result CSV file'; // Commit message
+      const content = btoa(userResult.map(row => row.join(',')).join('\n')); // Convert userResult to CSV content
+
+      fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message,
+          content,
+        }),
+      })
+        .then(response => {
+          if (response.status === 201) {
+            alert('User result CSV file saved successfully!');
+          } else {
+            alert('Failed to save user result CSV file');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to save user result CSV file');
+        });
+    }
+
+
+    // Load the image
+    const image = new Image();
+    image.src = "";
+
+    // Once the image is loaded, draw it on the canvas
+    image.onload = function() {
+      const canvas = document.getElementById('canvas1');
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    };
+
+    function readCSV() {
+      const inputText = document.getElementById('input-text').value;
+      const filePath = "https://SwagMasterDave.github.io/allabeler.github.io/final_list_toChris_0315.csv";
+      fetch(filePath)
+        .then(response => response.text())
+        .then(contents => {
+          displayCSV(contents,inputText);
+          const imagePath = csvData[imgNum][2]; // Assuming the file path is at index 0
+          image.src = "./original/" + imagePath;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to read CSV file');
+        });
+    }
+
+    let csvData = [];
+
+    function displayCSV(contents,inputText) {
+      const lines = contents.split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        const cells = lines[i].split(',');
+        if (cells.includes(inputText)) {
+          csvData.push(cells);
+        }
+      }
+      console.log(csvData);
+    }
+
+    const canvas = document.getElementById('canvas1');
+    canvas.addEventListener('mousedown', handleCanvasMouseDown);
+    canvas.addEventListener('mousemove', handleCanvasMouseMove);
+    canvas.addEventListener('mouseup', handleCanvasMouseUp);
+    canvas.addEventListener('contextmenu', handleCanvasRightClick);
+    
+  </script>
+</body>
+</html>
