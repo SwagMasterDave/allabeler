@@ -623,7 +623,7 @@
     }
 
     function saveData() {
-      const githubPAT = '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'; // Use the environment variable for the PAT
+      const githubPAT = '${{ secrets.SafeToken }}'; // Use the environment variable for the PAT
       const owner = 'SwagMasterDave'; // Replace with your GitHub username
       const repo = 'allabeler'; // Replace with your GitHub repository name
       const path = 'userResult.csv'; // Path to save the CSV file in your repository
