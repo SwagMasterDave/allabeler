@@ -625,7 +625,7 @@
     function saveData() {
       const githubPAT = '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'; // Use the environment variable for the PAT
       const owner = 'SwagMasterDave'; // Replace with your GitHub username
-      const repo = 'allabeler.github.io'; // Replace with your GitHub repository name
+      const repo = 'allabeler'; // Replace with your GitHub repository name
       const path = 'userResult.csv'; // Path to save the CSV file in your repository
       const message = 'Add user result CSV file'; // Commit message
       const content = btoa(userResult.map(row => row.join(',')).join('\n')); // Convert userResult to CSV content
