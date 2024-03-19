@@ -437,12 +437,14 @@
         image.src = "./original/" + imagePath;
         userResult.push(temp);
         temp = [];
+        boxes = [];
         console.log(userResult);
 
         imgNum = imgNum + 1;
       } else {
         userResult.push(temp);
         temp = [];
+        boxes = [];
         console.log(userResult);
         // If there are no more images, change the button text to "Save Data"
         const imagePath = "./complete.png";
