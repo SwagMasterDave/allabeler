@@ -623,13 +623,14 @@
     }
 
     function saveData() {
-      const githubPAT = '${{ secrets.SAFETOKEN }}'; // Use the environment variable for the PAT
+      const githubPAT = '${{secrets.SAFETOKEN}}'; // Use the environment variable for the PAT
       const owner = 'SwagMasterDave'; // Replace with your GitHub username
       const repo = 'allabeler'; // Replace with your GitHub repository name
       const path = 'userResult.csv'; // Path to save the CSV file in your repository
       const message = 'Add user result CSV file'; // Commit message
       const content = btoa(userResult.map(row => row.join(',')).join('\n')); // Convert userResult to CSV content
 
+      console.log(githubPAT);
       console.log('URL:', `https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
       console.log('Body:', JSON.stringify({ message, content }));
 
