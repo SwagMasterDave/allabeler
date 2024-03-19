@@ -630,6 +630,9 @@
       const message = 'Add user result CSV file'; // Commit message
       const content = btoa(userResult.map(row => row.join(',')).join('\n')); // Convert userResult to CSV content
 
+      console.log('URL:', `https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
+      console.log('Body:', JSON.stringify({ message, content }));
+
       fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
         method: 'PUT',
         headers: {
@@ -642,7 +645,12 @@
         }),
       })
         .then(response => {
-          if (response.status === 201) {
+          console.log('Response status:', response.status);
+          return response.json();
+        })
+        .then(data => {
+          console.log('Response data:', data);
+          if (data.commit) {
             alert('User result CSV file saved successfully!');
           } else {
             alert('Failed to save user result CSV file');
