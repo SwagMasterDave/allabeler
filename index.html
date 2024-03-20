@@ -419,9 +419,7 @@
         confidenceLevel = prompt('Please enter the confidence level (1-7) 1 is for least confident and 7 for most confident:');
         
         // Check if the input is valid
-        if (confidenceLevel === null) {
-          return; // User clicked Cancel, exit the function
-        } else if (confidenceLevel >= 1 && confidenceLevel <= 7 && !isNaN(confidenceLevel)) {
+        if (confidenceLevel >= 1 && confidenceLevel <= 7 && !isNaN(confidenceLevel)) {
           isValidInput = true; // Valid input, exit the loop
         } else {
           alert('Invalid input. Please enter a number between 1 and 7.');
