@@ -450,7 +450,7 @@
         const imagePath = "./complete.png";
         image.src = imagePath;
 
-        saveData();
+        downloadString(userResult.map(i => i.join(',')).join('\n'), 'text/plain', 'userResult.csv');
       }
     }
 
@@ -626,45 +626,18 @@
       image.src = './XAI/' + csvData[imgNum][2]; // Assuming csvData[imgNum][2] contains the image filename in the XAI folder
     }
 
-    function saveData() {
-      const githubPAT = '${{secrets.SAFETOKEN}}'; // Use the environment variable for the PAT
-      const owner = 'SwagMasterDave'; // Replace with your GitHub username
-      const repo = 'allabeler'; // Replace with your GitHub repository name
-      const path = 'userResult.csv'; // Path to save the CSV file in your repository
-      const message = 'Add user result CSV file'; // Commit message
-      const content = btoa(userResult.map(row => row.join(',')).join('\n')); // Convert userResult to CSV content
+    function downloadString(text, fileType, fileName) {
+      const blob = new Blob([text], { type: fileType });
 
-      console.log(githubPAT);
-      console.log('URL:', `https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
-      console.log('Body:', JSON.stringify({ message, content }));
-
-      fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `token ${githubPAT}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message,
-          content,
-        }),
-      })
-        .then(response => {
-          console.log('Response status:', response.status);
-          return response.json();
-        })
-        .then(data => {
-          console.log('Response data:', data);
-          if (data.commit) {
-            alert('User result CSV file saved successfully!');
-          } else {
-            alert('Failed to save user result CSV file');
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Error');
-        });
+      const a = document.createElement('a');
+      a.download = fileName;
+      a.href = URL.createObjectURL(blob);
+      a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);
     }
 
 
