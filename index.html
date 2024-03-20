@@ -433,7 +433,7 @@
 
       if (imgNum < csvData.length-1) {
         // If there are more images, update the image source and reset the canvas
-        const imagePath = csvData[imgNum][2]; // Assuming the file path is at index 2
+        const imagePath = csvData[imgNum+1][2]; // Assuming the file path is at index 2
         image.src = "./original/" + imagePath;
         image.onload();
         userResult.push(temp);
