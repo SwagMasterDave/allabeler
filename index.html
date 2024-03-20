@@ -342,38 +342,40 @@
     }
 
     function showSecondPlaceholder() {
-      // Save the combo box selection to the temp array
-      const comboValue1 = document.getElementById('combo1').value;
-      const mappedValue1 = mapComboValue(comboValue1);
-      temp.push(mappedValue1);
-      // Save the combo box selection to the temp array
-      const comboValue2 = document.getElementById('combo2').value;
-      const mappedValue2 = mapComboValue(comboValue2);
-      temp.push(mappedValue2);
-      // Save the combo box selection to the temp array
-      const comboValue3 = document.getElementById('combo3').value;
-      const mappedValue3 = mapComboValue(comboValue3);
-      temp.push(mappedValue3);
-      // Save the combo box selection to the temp array
-      const comboValue4 = document.getElementById('combo4').value;
-      const mappedValue4 = mapComboValue(comboValue4);
-      temp.push(mappedValue4);
+      if (imgNum < csvData.length) {
+        // Save the combo box selection to the temp array
+        const comboValue1 = document.getElementById('combo1').value;
+        const mappedValue1 = mapComboValue(comboValue1);
+        temp.push(mappedValue1);
+        // Save the combo box selection to the temp array
+        const comboValue2 = document.getElementById('combo2').value;
+        const mappedValue2 = mapComboValue(comboValue2);
+        temp.push(mappedValue2);
+        // Save the combo box selection to the temp array
+        const comboValue3 = document.getElementById('combo3').value;
+        const mappedValue3 = mapComboValue(comboValue3);
+        temp.push(mappedValue3);
+        // Save the combo box selection to the temp array
+        const comboValue4 = document.getElementById('combo4').value;
+        const mappedValue4 = mapComboValue(comboValue4);
+        temp.push(mappedValue4);
 
-      temp.push(tempVal);
+        temp.push(tempVal);
 
-      updateLabelText('button0-text', 'AI Suggestion: ' + AISuggestion());
-      updateLabelText('button1-text', 'Narrow Joint Space:A');
-      updateLabelText('button2-text', 'Osteophytes:C');
-      updateLabelText('button3-text', 'Irregularity of cortical surface:B');
-      updateLabelText('button4-text', 'Tibital Spiking:D');
+        updateLabelText('button0-text', 'AI Suggestion: ' + AISuggestion());
+        updateLabelText('button1-text', 'Narrow Joint Space:A');
+        updateLabelText('button2-text', 'Osteophytes:C');
+        updateLabelText('button3-text', 'Irregularity of cortical surface:B');
+        updateLabelText('button4-text', 'Tibital Spiking:D');
 
-      const placeholder2 = document.getElementById('placeholder2');
-      placeholder2.style.display = 'block';
+        const placeholder2 = document.getElementById('placeholder2');
+        placeholder2.style.display = 'block';
 
-      const rightGroupBox = document.getElementById('right-group-box');
-      rightGroupBox.style.display = 'grid'; // Show the right group box
-      
-      copyCanvas(); // Detect and draw red boxes on canvas2
+        const rightGroupBox = document.getElementById('right-group-box');
+        rightGroupBox.style.display = 'grid'; // Show the right group box
+        
+        copyCanvas(); // Detect and draw red boxes on canvas2
+      }
     }
     function AISuggestion(){
       if(imgNum < csvData.length){
