@@ -432,17 +432,15 @@
       temp.push(parseInt(confidenceLevel));
 
       if (imgNum < csvData.length-1) {
+        imgNum = imgNum + 1;
         // If there are more images, update the image source and reset the canvas
-        const imagePath = csvData[imgNum+1][2]; // Assuming the file path is at index 2
+        const imagePath = csvData[imgNum][2]; // Assuming the file path is at index 2
         image.src = "./original/" + imagePath;
-        image.onload();
         userResult.push(temp);
         temp = [];
         boxes = [];
         console.log(userResult);
-
-        imgNum = imgNum + 1;
-      } else if(imgNum = csvData.length-1){
+      } else if(imgNum == csvData.length-1){
         userResult.push(temp);
         temp = [];
         boxes = [];
@@ -453,6 +451,9 @@
 
         downloadString(userResult.map(i => i.join(',')).join('\n'), 'text/plain', 'userResult.csv');
         imgNum = imgNum + 1;
+      }
+      else{
+        console.log("done")
       }
     }
 
