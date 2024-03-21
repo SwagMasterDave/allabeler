@@ -255,6 +255,9 @@
       </div>
     </div>
   </div>
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
   
 
   <script>
@@ -388,6 +391,12 @@
       }
     }
 
+    function updateProgressBar() {
+      const progressBar = document.getElementById('progress-bar');
+      const percentage = ((imgNum + 1) / csvData.length) * 100;
+      progressBar.style.width = percentage + '%';
+    }
+
     function hideSecondPlaceholder(){
       temp.push(tempVal);
       temp.push(csvData[imgNum][1]);
@@ -440,6 +449,7 @@
         temp = [];
         boxes = [];
         console.log(userResult);
+        updateProgressBar();
       } else if(imgNum == csvData.length-1){
         userResult.push(temp);
         temp = [];
@@ -448,7 +458,7 @@
         // If there are no more images, change the button text to "Save Data"
         const imagePath = "./complete.png";
         image.src = imagePath;
-
+        updateProgressBar();
         downloadString(userResult.map(i => i.join(',')).join('\n'), 'text/plain', 'userResult.csv');
         imgNum = imgNum + 1;
       }
