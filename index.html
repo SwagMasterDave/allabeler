@@ -639,10 +639,33 @@
 
         // Draw the cloned canvas onto canvas2
         ctx2.drawImage(canvas1Clone, 0, 0);
-        console.log(canvas1Clone);
+        cropImages(canvas1Clone, boxes);
+        console.log(canvas1Clone.toDataURL());
 
       };
       image.src = './XAI/' + csvData[imgNum][2]; // Assuming csvData[imgNum][2] contains the image filename in the XAI folder
+    }
+
+    function cropImages(canvas, boxes) {
+        // Create a temporary canvas to draw the cropped images
+        let tempCanvas = document.createElement('canvas');
+        let tempCtx = tempCanvas.getContext('2d');
+
+        // Loop through the boxes array
+        for (let box of boxes) {
+            // Destructure box object to get coordinates and dimensions
+            let { x, y, width, height } = box;
+            
+            // Set the size of the temporary canvas to match the cropped area
+            tempCanvas.width = width;
+            tempCanvas.height = height;
+
+            // Draw the cropped area from the original canvas to the temporary canvas
+            tempCtx.drawImage(canvas, x, y, width, height, 0, 0, width, height);
+
+            // Print the data URL of the cropped image to the console
+            console.log(tempCanvas.toDataURL());
+        }
     }
 
     function downloadString(text, fileType, fileName) {
