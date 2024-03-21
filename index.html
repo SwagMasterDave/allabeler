@@ -647,31 +647,24 @@
     }
 
     function cropImages(canvas, boxes) {
-      // Create a temporary canvas to draw the cropped images
-      let tempCanvas = document.createElement('canvas');
-      tempCanvas.width = canvas.width;
-      tempCanvas.height = canvas.height;
-      let tempCtx = tempCanvas.getContext('2d');
+        // Create a temporary canvas to draw the cropped images
+        let tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        let tempCtx = tempCanvas.getContext('2d');
 
-      // Set initial x-coordinate for drawing images next to each other
-      let currentX = 0;
+        // Loop through the boxes array
+        for (let box of boxes) {
+            // Destructure box object to get coordinates and dimensions
+            let { x, y, width, height} = box;
 
-      // Loop through the boxes array
-      for (let box of boxes) {
-          // Destructure box object to get coordinates and dimensions
-          let { x, y, width, height } = box;
+            // Draw the cropped area from the original canvas to the temporary canvas
+            tempCtx.drawImage(canvas, x, y, width, height, x, y, width, height);
 
-          // Draw the cropped area from the original canvas to the temporary canvas
-          tempCtx.drawImage(canvas, x, y, width, height, currentX, 0, width, height);
-
-          // Update currentX for the next image
-          currentX += width;
-      }
-
-      // Print the data URL of the cropped image to the console
-      console.log(tempCanvas.toDataURL());
-  }
-
+            // Print the data URL of the cropped image to the console
+            console.log(tempCanvas.toDataURL());
+        }
+    }
 
     function downloadString(text, fileType, fileName) {
       const blob = new Blob([text], { type: fileType });
