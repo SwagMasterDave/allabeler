@@ -633,6 +633,7 @@
         // Draw the red boxes on top of the clone of canvas1
         for (const box of redBoxes) {
           ctx1Clone.strokeStyle = 'red';
+          ctx1Clone.fillStyle = 'red';
           ctx1Clone.lineWidth = 2;
           ctx1Clone.strokeRect(box.x - 5, box.y - 5, 10, 10); // Adjust rectangle size as needed
         }
@@ -657,7 +658,6 @@
         let tempCtx = tempCanvas.getContext('2d');
         
         let redPixelCount = 0;
-        let nonWhitePixelCount = 0;
 
         // Loop through the boxes array
         for (let box of boxes) {
@@ -678,14 +678,9 @@
                   if (data[i] > 200 && data[i + 1] < 150 && data[i + 2] < 150) {
                       redPixelCount++;
                   }
-
-                  // Check if the pixel is not white
-                  if (data[i] !== 255 || data[i + 1] !== 255 || data[i + 2] !== 255) {
-                      nonWhitePixelCount++;
-                  }
               }
               // Print the number of red pixels and non-white pixels to the console
-              console.log(`Red Pixels: ${redPixelCount}, Non-White Pixels: ${nonWhitePixelCount}`);
+              console.log(`Red Pixels: ${redPixelCount}`);
               console.log(redPixelCount/nonWhitePixelCount);
         }
     }
