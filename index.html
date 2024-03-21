@@ -639,32 +639,57 @@
 
         // Draw the cloned canvas onto canvas2
         ctx2.drawImage(canvas1Clone, 0, 0);
-        cropImages(canvas1Clone, boxes);
+        cropImages(canvas1Clone, boxes, "orange");
+        cropImages(canvas1Clone, boxes, "green");
+        cropImages(canvas1Clone, boxes, "blue");
+        cropImages(canvas1Clone, boxes, "purple");
         console.log(canvas1Clone.toDataURL());
 
       };
       image.src = './XAI/' + csvData[imgNum][2]; // Assuming csvData[imgNum][2] contains the image filename in the XAI folder
     }
 
-    function cropImages(canvas, boxes) {
+    function cropImages(canvas, boxes, selectedColor) {
         // Create a temporary canvas to draw the cropped images
         let tempCanvas = document.createElement('canvas');
         tempCanvas.width = canvas.width;
         tempCanvas.height = canvas.height;
         let tempCtx = tempCanvas.getContext('2d');
+        
+        let redPixelCount = 0;
+        let nonWhitePixelCount = 0;
 
         // Loop through the boxes array
         for (let box of boxes) {
             // Destructure box object to get coordinates and dimensions
-            let { x, y, width, height} = box;
+            let { x, y, width, height, color} = box;
 
-            // Draw the cropped area from the original canvas to the temporary canvas
-            tempCtx.drawImage(canvas, x, y, width, height, x, y, width, height);
+            if(color == selectedColor)
+              // Draw the cropped area from the original canvas to the temporary canvas
+              tempCtx.drawImage(canvas, x, y, width, height, x, y, width, height);
 
-            // Print the data URL of the cropped image to the console
-            console.log(tempCanvas.toDataURL());
+              // Get the image data of the cropped area
+              let imageData = tempCtx.getImageData(x, y, width, height);
+              let data = imageData.data;
+
+              // Loop through the pixels in the cropped area
+              for (let i = 0; i < data.length; i += 4) {
+                  // Check if the pixel is red
+                  if (data[i] > 200 && data[i + 1] < 50 && data[i + 2] < 50) {
+                      redPixelCount++;
+                  }
+
+                  // Check if the pixel is not white
+                  if (data[i] !== 255 || data[i + 1] !== 255 || data[i + 2] !== 255) {
+                      nonWhitePixelCount++;
+                  }
+              }
+              // Print the number of red pixels and non-white pixels to the console
+              console.log(`Red Pixels: ${redPixelCount}, Non-White Pixels: ${nonWhitePixelCount}`);
+              console.log(redPixelCount/nonWhitePixelCount);
         }
     }
+
 
     function downloadString(text, fileType, fileName) {
       const blob = new Blob([text], { type: fileType });
