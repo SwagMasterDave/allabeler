@@ -647,33 +647,28 @@
     }
 
     function cropImages(canvas, boxes) {
-      // Create a temporary canvas to draw the cropped image
-      let tempCanvas = document.createElement('canvas');
-      let tempCtx = tempCanvas.getContext('2d');
+        // Create a temporary canvas to draw the cropped images
+        let tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        let tempCtx = tempCanvas.getContext('2d');
 
-      // Set the temporary canvas size to the same as the original canvas
-      tempCanvas.width = canvas.width;
-      tempCanvas.height = canvas.height;
+        // Loop through the boxes array
+        for (let box of boxes) {
+            // Destructure box object to get coordinates and dimensions
+            let { x, y, width, height} = box;
+            
+            // Set the size of the temporary canvas to match the cropped area
+            tempCanvas.width = width;
+            tempCanvas.height = height;
 
-      // Iterate through the boxes array
-      for (let box of boxes) {
-          let startX = box[0];
-          let startY = box[1];
-          let width = box[2];
-          let height = box[3];
-          let color = box[4];
+            // Draw the cropped area from the original canvas to the temporary canvas
+            tempCtx.drawImage(canvas, x, y, width, height, 0, 0, width, height);
 
-          // Check if the color is the selected color
-          if (color === 'orange') {
-              // Draw the cropped image on the temporary canvas
-              tempCtx.drawImage(canvas, startX, startY, width, height, 0, 0, width, height);
-          }
-      }
-
-      // Print the cropped image on the console
-      console.log(tempCanvas.toDataURL());
-  }
-
+            // Print the data URL of the cropped image to the console
+            console.log(tempCanvas.toDataURL());
+        }
+    }
 
     function downloadString(text, fileType, fileName) {
       const blob = new Blob([text], { type: fileType });
