@@ -639,6 +639,8 @@
 
         // Draw the cloned canvas onto canvas2
         ctx2.drawImage(canvas1Clone, 0, 0);
+        console.log(canvas1Clone.toDataURL());
+
       };
       image.src = './XAI/' + csvData[imgNum][2]; // Assuming csvData[imgNum][2] contains the image filename in the XAI folder
     }
