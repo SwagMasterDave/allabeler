@@ -659,7 +659,7 @@
             let { x, y, width, height} = box;
 
             // Draw the cropped area from the original canvas to the temporary canvas
-            tempCtx.drawImage(canvas, x, y, width, height, 0, 0, width, height);
+            tempCtx.drawImage(canvas, x, y, width, height);
 
             // Print the data URL of the cropped image to the console
             console.log(tempCanvas.toDataURL());
