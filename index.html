@@ -63,7 +63,7 @@
       display: none; /* Initially hide all placeholders */
       width: 300px;
       height: 300px;
-      background-color: lightgray;
+      background-color: white;
       margin-top: 10px;
     }
 
@@ -657,10 +657,6 @@
         for (let box of boxes) {
             // Destructure box object to get coordinates and dimensions
             let { x, y, width, height} = box;
-            
-            // Set the size of the temporary canvas to match the cropped area
-            tempCanvas.width = width;
-            tempCanvas.height = height;
 
             // Draw the cropped area from the original canvas to the temporary canvas
             tempCtx.drawImage(canvas, x, y, width, height, 0, 0, width, height);
