@@ -274,6 +274,8 @@
     let tempVal = "";
     let temp = [];
     let userResult = [];
+    let totalRed = 0;
+    let redAppeared = 0
 
     let arthritisSelected = false;
     let nonArthritisSelected = false;
@@ -622,6 +624,16 @@
             redBoxes.push({ x: x, y: y });
           }
         }
+        const imageData1 = ctx2.getImageData(0, 0, canvas2.width, canvas2.height);
+        const data1 = imageData1.data;
+        totalRed = 0;
+        for (let i = 0; i < data.length; i += 4) {
+            // Check if the pixel is red
+            if (data[i] > 200 && data[i + 1] < 150 && data[i + 2] < 150) {
+              totalRed++;
+            }
+        }
+        console.log(`Red Pixels: ${totalRed}`);
 
         // Clone canvas1
         const canvas1Clone = document.createElement('canvas');
@@ -657,32 +669,30 @@
         tempCanvas.height = canvas.height;
         let tempCtx = tempCanvas.getContext('2d');
         
-        let redPixelCount = 0;
+        redAppeared = 0;
 
         // Loop through the boxes array
         for (let box of boxes) {
-            // Destructure box object to get coordinates and dimensions
-            let { x, y, width, height, color} = box;
+          // Destructure box object to get coordinates and dimensions
+          let { x, y, width, height, color} = box;
+          if(color == selectedColor)
+            // Draw the cropped area from the original canvas to the temporary canvas
+            tempCtx.drawImage(canvas, x, y, width, height, x, y, width, height);
 
-            if(color == selectedColor)
-              // Draw the cropped area from the original canvas to the temporary canvas
-              tempCtx.drawImage(canvas, x, y, width, height, x, y, width, height);
+            // Get the image data of the cropped area
+            let imageData = tempCtx.getImageData(x, y, width, height);
+            let data = imageData.data;
 
-              // Get the image data of the cropped area
-              let imageData = tempCtx.getImageData(x, y, width, height);
-              let data = imageData.data;
-
-              // Loop through the pixels in the cropped area
-              for (let i = 0; i < data.length; i += 4) {
-                  // Check if the pixel is red
-                  if (data[i] > 200 && data[i + 1] < 150 && data[i + 2] < 150) {
-                      redPixelCount++;
-                  }
+            // Loop through the pixels in the cropped area
+          for (let i = 0; i < data.length; i += 4) {
+              // Check if the pixel is red
+              if (data[i] > 200 && data[i + 1] < 150 && data[i + 2] < 150) {
+                redAppeared++;
               }
+          }
               // Print the number of red pixels and non-white pixels to the console
-              console.log(`Red Pixels: ${redPixelCount}`);
-              console.log(redPixelCount/nonWhitePixelCount);
         }
+        console.log(`Red Pixels: ${redAppeared}`);
     }
 
 
