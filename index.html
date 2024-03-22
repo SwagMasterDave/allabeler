@@ -624,16 +624,6 @@
             redBoxes.push({ x: x, y: y });
           }
         }
-        const imageData1 = ctx2.getImageData(0, 0, canvas2.width, canvas2.height);
-        const data1 = imageData1.data;
-        totalRed = 0;
-        for (let i = 0; i < data.length; i += 4) {
-            // Check if the pixel is red
-            if (data[i] > 200 && data[i + 1] < 150 && data[i + 2] < 150) {
-              totalRed++;
-            }
-        }
-        console.log(`Red Pixels: ${totalRed}`);
 
         // Clone canvas1
         const canvas1Clone = document.createElement('canvas');
@@ -649,6 +639,16 @@
           ctx1Clone.lineWidth = 2;
           ctx1Clone.strokeRect(box.x - 5, box.y - 5, 10, 10); // Adjust rectangle size as needed
         }
+        const imageData1 = ctx2.getImageData(0, 0, ctx1Clone.width, ctx1Clone.height);
+        const data1 = imageData1.data;
+        totalRed = 0;
+        for (let i = 0; i < data.length; i += 4) {
+            // Check if the pixel is red
+            if (data[i] > 200 && data[i + 1] < 150 && data[i + 2] < 150) {
+              totalRed++;
+            }
+        }
+        console.log(`Red Pixels: ${totalRed}`);
 
         // Draw the cloned canvas onto canvas2
         ctx2.drawImage(canvas1Clone, 0, 0);
