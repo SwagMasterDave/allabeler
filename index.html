@@ -640,13 +640,13 @@
         totalRed = countRedPixels(ctx2);
         console.log(`Red Pixel:${totalRed}`);
         cropImages(canvas1Clone, boxes, "orange");
-        updateLabelText('button1-text', `Narrow Joint Space: ${trunc((redAppeared*100)/totalRed)}%`);
+        updateLabelText('button1-text', `Narrow Joint Space: ${Math.trunc((redAppeared*100)/totalRed)}%`);
         cropImages(canvas1Clone, boxes, "green");
-        updateLabelText('button2-text', `Osteophytes: ${trunc((redAppeared*100)/totalRed)}%`);
+        updateLabelText('button2-text', `Osteophytes: ${Math.trunc((redAppeared*100)/totalRed)}%`);
         cropImages(canvas1Clone, boxes, "blue");
-        updateLabelText('button3-text', `Irregularity of cortical surface: ${trunc((redAppeared*100)/totalRed)}%`);
+        updateLabelText('button3-text', `Irregularity of cortical surface: ${Math.trunc((redAppeared*100)/totalRed)}%`);
         cropImages(canvas1Clone, boxes, "purple");
-        updateLabelText('button4-text', `Tibital Spiking: ${trunc((redAppeared*100)/totalRed)}%`);
+        updateLabelText('button4-text', `Tibital Spiking: ${Math.trunc((redAppeared*100)/totalRed)}%`);
         console.log(canvas1Clone.toDataURL());
 
       };
