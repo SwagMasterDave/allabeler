@@ -639,7 +639,7 @@
           ctx1Clone.lineWidth = 2;
           ctx1Clone.strokeRect(box.x - 5, box.y - 5, 10, 10); // Adjust rectangle size as needed
         }
-        const imageData1 = ctx2.getImageData(0, 0, ctx1Clone.width, ctx1Clone.height);
+        const imageData1 = ctx1Clone.getImageData(0, 0, canvas2.width, canvas2.height);
         const data1 = imageData1.data;
         totalRed = 0;
         for (let i = 0; i < data.length; i += 4) {
