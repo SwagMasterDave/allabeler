@@ -675,7 +675,7 @@
         for (let box of boxes) {
           // Destructure box object to get coordinates and dimensions
           let { x, y, width, height, color} = box;
-          if(color == selectedColor)
+          if(color == selectedColor){
             // Draw the cropped area from the original canvas to the temporary canvas
             tempCtx.drawImage(canvas, x, y, width, height, x, y, width, height);
 
@@ -684,15 +684,16 @@
             let data = imageData.data;
 
             // Loop through the pixels in the cropped area
-          for (let i = 0; i < data.length; i += 4) {
+            for (let i = 0; i < data.length; i += 4) {
               // Check if the pixel is red
               if (data[i] > 200 && data[i + 1] < 150 && data[i + 2] < 150) {
                 redAppeared++;
-              }
-          }
+              } 
+            }
               // Print the number of red pixels and non-white pixels to the console
+          }
         }
-        console.log(`Red Pixels: ${redAppeared}`);
+        console.log(`${selectedColor}: ${redAppeared}`); 
     }
 
 
