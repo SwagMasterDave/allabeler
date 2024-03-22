@@ -291,13 +291,13 @@
       const arthritisButton = document.getElementById('arthritis-button');
       const nonArthritisButton = document.getElementById('non-arthritis-button');
 
-      if (option === 'arthritis') {
+      if (option == 'arthritis') {
         arthritisSelected = !arthritisSelected;
         nonArthritisSelected = false;
         arthritisButton.classList.toggle('selected');
         nonArthritisButton.classList.remove('selected');
         tempVal = 'Arthritis'
-      } else if (option === 'non-arthritis') {
+      } else if (option == 'non-arthritis') {
         nonArthritisSelected = !nonArthritisSelected;
         arthritisSelected = false;
         nonArthritisButton.classList.toggle('selected');
@@ -313,13 +313,13 @@
       const arthritisButton = document.getElementById('arthritis-button2');
       const nonArthritisButton = document.getElementById('non-arthritis-button2');
 
-      if (option === 'arthritis') {
+      if (option == 'arthritis') {
         arthritisSelected2 = !arthritisSelected2;
         nonArthritisSelected2 = false;
         arthritisButton.classList.toggle('selected');
         nonArthritisButton.classList.remove('selected');
         tempVal = 'Arthritis'
-      } else if (option === 'non-arthritis') {
+      } else if (option == 'non-arthritis') {
         nonArthritisSelected2 = !nonArthritisSelected2;
         arthritisSelected2 = false;
         nonArthritisButton.classList.toggle('selected');
@@ -504,8 +504,8 @@
       const ctx = canvas.getContext('2d');
 
       // Check if the combo box for the feature is selected with "Present"
-      const comboValue = document.getElementById(`combo${selectedColor === 'orange' ? 1 : selectedColor === 'green' ? 2 : selectedColor === 'blue' ? 3 : 4}`).value;
-      if (selectedColor !== 'black' && selectedColor !== 'red' && comboValue === '1') {
+      const comboValue = document.getElementById(`combo${selectedColor == 'orange' ? 1 : selectedColor == 'green' ? 2 : selectedColor == 'blue' ? 3 : 4}`).value;
+      if (selectedColor !== 'black' && selectedColor !== 'red' && comboValue == '1') {
         isDrawing = true;
         startX = event.offsetX;
         startY = event.offsetY;
@@ -629,8 +629,8 @@
 
         // Draw the red boxes on top of the clone of canvas1
         for (const box of redBoxes) {
-          ctx1Clone.strokeStyle = 'red';
-          ctx1Clone.fillStyle = 'red';
+          ctx1Clone.strokeStyle = 'rgba(255, 0, 0, 0.5)'; // Semi-transparent red outline
+          ctx1Clone.fillStyle = 'rgba(255, 0, 0, 0.5)'; // Semi-transparent red fill
           ctx1Clone.lineWidth = 2;
           ctx1Clone.strokeRect(box.x - 5, box.y - 5, 10, 10); // Adjust rectangle size as needed
         }
