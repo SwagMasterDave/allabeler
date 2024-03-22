@@ -624,17 +624,6 @@
             redBoxes.push({ x: x, y: y });
           }
         }
-        const imageData1 = ctx2.getImageData(0, 0, canvas2.width, canvas2.height);
-        const data1 = imageData1.data;
-        totalRed = 0;
-        for (let i = 0; i < data.length; i += 4) {
-            // Check if the pixel is red
-            if (data[i] > 200 && data[i + 1] < 150 && data[i + 2] < 150) {
-              totalRed++;
-            }
-        }
-        console.log(`Red Pixels: ${totalRed}`);
-
         // Clone canvas1
         const canvas1Clone = document.createElement('canvas');
         canvas1Clone.width = canvas1.width;
@@ -652,6 +641,8 @@
 
         // Draw the cloned canvas onto canvas2
         ctx2.drawImage(canvas1Clone, 0, 0);
+        totalRed = countRedPixels(ctx2);
+        console.log(`Red Pixel:${totalRed}`;
         cropImages(canvas1Clone, boxes, "orange");
         cropImages(canvas1Clone, boxes, "green");
         cropImages(canvas1Clone, boxes, "blue");
@@ -661,6 +652,24 @@
       };
       image.src = './XAI/' + csvData[imgNum][2]; // Assuming csvData[imgNum][2] contains the image filename in the XAI folder
     }
+    function countRedPixels(ctx) {
+      const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+      const data = imageData.data;
+      let count = 0;
+
+      for (let i = 0; i < data.length; i += 4) {
+          const red = data[i];
+          const green = data[i + 1];
+          const blue = data[i + 2];
+          const alpha = data[i + 3];
+
+          if (red > 150 && green < 150 && blue < 150 && alpha > 0) {
+              count++;
+          }
+      }
+
+      return count;
+  }
 
     function cropImages(canvas, boxes, selectedColor) {
         // Create a temporary canvas to draw the cropped images
