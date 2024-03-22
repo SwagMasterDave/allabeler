@@ -373,10 +373,6 @@
         temp.push(tempVal);
 
         updateLabelText('button0-text', 'AI Suggestion: ' + AISuggestion());
-        updateLabelText('button1-text', 'Narrow Joint Space:A');
-        updateLabelText('button2-text', 'Osteophytes:C');
-        updateLabelText('button3-text', 'Irregularity of cortical surface:B');
-        updateLabelText('button4-text', 'Tibital Spiking:D');
 
         const placeholder2 = document.getElementById('placeholder2');
         placeholder2.style.display = 'block';
@@ -644,9 +640,13 @@
         totalRed = countRedPixels(ctx2);
         console.log(`Red Pixel:${totalRed}`);
         cropImages(canvas1Clone, boxes, "orange");
+        updateLabelText('button1-text', `Narrow Joint Space:${redAppeared/totalRed}`);
         cropImages(canvas1Clone, boxes, "green");
+        updateLabelText('button2-text', `Osteophytes: ${redAppeared/totalRed}`);
         cropImages(canvas1Clone, boxes, "blue");
+        updateLabelText('button3-text', `Irregularity of cortical surface:${redAppeared/totalRed}`);
         cropImages(canvas1Clone, boxes, "purple");
+        updateLabelText('button4-text', `Tibital Spiking:${redAppeared/totalRed}`);
         console.log(canvas1Clone.toDataURL());
 
       };
