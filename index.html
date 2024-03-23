@@ -629,8 +629,8 @@
 
         // Draw the red boxes on top of the clone of canvas1
         for (const box of redBoxes) {
-          ctx1Clone.strokeStyle = `rgb(255,0,0,0.01)`;
-          ctx1Clone.fillStyle = 'rgb(255,0,0,0.01';
+          ctx1Clone.strokeStyle = `rgb(255,0,0,0.025)`;
+          ctx1Clone.fillStyle = 'rgb(255,0,0,0.025';
           ctx1Clone.lineWidth = 2;
           ctx1Clone.strokeRect(box.x - 5, box.y - 5, 10, 10); // Adjust rectangle size as needed
         }
